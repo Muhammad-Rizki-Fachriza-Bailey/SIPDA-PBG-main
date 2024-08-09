@@ -1,0 +1,252 @@
+:root {
+    --primary: #405D72;
+    --bg: #758694;
+    --sidecolor: #F7E7DC;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: var(--bg);
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--sidecolor);
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar.hide {
+    transform: translateX(-250px);
+}
+
+.sidebar .dpmptsp {
+    width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.sidebar .dashboard-icon,
+.archive-icon {
+    width: 30px;
+    height: auto;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.sidebar ul li a img {
+    margin-right: 10px;
+}
+
+.sidebar button {
+    margin-top: auto;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.navbar {
+    margin-left: 270px;
+    background-color: var(--primary);
+    color: var(--sidecolor);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.navbar.fullwidth {
+    margin-left: 20px;
+}
+
+.navbar header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar header .menu-icon {
+    width: 35px;
+    height: auto;
+    cursor: pointer;
+}
+
+.navbar header .title {
+    font-size: 12px;
+    color: var(--sidecolor);
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.main-content {
+    margin-left: 270px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    transition: margin-left 0.3s ease-in-out;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.main-content.fullwidth {
+    margin-left: 20px;
+}
+
+.title-data-arsip {
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.search-and-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-container,
+.sort-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-container .icon,
+.sort-container .icon {
+    position: absolute;
+    left: 10px;
+    width: 20px;
+    height: auto;
+}
+
+.search-bar {
+    padding: 10px 10px 10px 35px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 200px;
+}
+
+.sort-button,
+.add-data-button {
+    padding: 10px 35px 10px 35px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.sort-button:hover,
+.add-data-button:hover {
+    background-color: #35495d;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    text-align: center;
+}
+
+.data-table th {
+    background-color: var(--primary);
+    color: white;
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.data-table tr:hover {
+    background-color: #ddd;
+}
+
+.data-table td a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.pagination a {
+    color: var(--sidecolor);
+    text-decoration: none;
+    padding: 8px 15px;
+    display: inline-block;
+}
+
+.pagination a.active {
+    background-color: var(--primary);
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #64696d;
+    border-radius: 5px;
+}
+
+.page-number {
+    background-color: var(--primary);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s;
+}
+
+.page-number:hover {
+    background-color: #35495d;
+}

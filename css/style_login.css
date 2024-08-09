@@ -1,0 +1,93 @@
+:root{
+    --primary: #405D72;
+    --bg: #758694;
+    --sidecolor: #F7E7DC;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: var(--bg) ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.input-box{
+    background: var(--primary);
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-box .logo{
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.input-box input{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    color: var(--primary);
+    background-color: var(--sidecolor);
+    border-radius: 4px;
+    position: relative;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container .eye {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 15px;
+}
+
+.input-box button{
+    width: 30%;
+    padding: 5px;
+    border: none;
+    background-color: var(--sidecolor);
+    color: var(--primary);
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-box a{
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.input-box h1{
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+}
