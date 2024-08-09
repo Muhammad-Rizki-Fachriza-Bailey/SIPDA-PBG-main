@@ -42,6 +42,7 @@
      <!-- main content start -->
      <div class="main-content">
         <h1 class="title-data-arsip">Tambah Data Formulir</h1>
+        <button class="button-back"><a href="index_data_arsip.php" class="back">back</a></button>
   
         <!-- Form start -->
         <form class="edit-form" action="tambah_data_arsip.php" method="post" enctype="multipart/form-data">

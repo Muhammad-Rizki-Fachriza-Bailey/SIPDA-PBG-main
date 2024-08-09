@@ -79,6 +79,8 @@ if (!$data) {
     <!-- main content start -->
     <div class="main-content">
         <h1 class="title-data-arsip">Detail Data Arsip</h1>
+        <button class="button-back"><a href="index_data_arsip.php" class="back">back</a></button>
+
         <!-- Identity sections -->
         <div class="identity-section">
             <h2>IDENTITAS DIRI</h2>

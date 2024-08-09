@@ -151,7 +151,8 @@ $result_pemohon = $conn->query($sql_pemohon);
     <!-- main content start -->
     <div class="main-content">
         <h1 class="title-data-arsip">Edit Data Arsip SK</h1>
-  
+        <button class="button-back"><a href="index_data_arsip.php" class="back">back</a></button>
+        
         <!-- Form start -->
         <form class="edit-form" action="edit_data_sk.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
             <fieldset>

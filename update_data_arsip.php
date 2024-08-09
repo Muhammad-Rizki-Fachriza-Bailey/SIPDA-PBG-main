@@ -123,7 +123,8 @@ $result_pemohon = $conn->query($sql_pemohon);
 
     <div class="main-content">
         <h1 class="title-data-arsip">Edit Data Identitas Diri</h1>
-
+        <button class="button-back"><a href="index_data_arsip.php" class="back">back</a></button>
+        
         <form class="edit-form" action="update_data_arsip.php?id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data">
             <fieldset>
                 <legend>Identitas Diri</legend>
