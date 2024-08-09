@@ -174,7 +174,6 @@ if (!$data) {
         </div>
         <div class="action-buttons">
             <button class="delete-button" id="btn_delete"><img src="asset/delete.png" alt="Delete"/>Delete</button>
-            <button class="edit-button"><img src="asset/editing.png" alt="Edit" /><a href="edit_data_arsip.php?id=<?php echo htmlspecialchars($data['nomor_sk']); ?>">Edit</a></button>
             <button class="download-button"><img src="asset/downloads.png" alt="Download" />Download</button>
         </div>
     </div>
