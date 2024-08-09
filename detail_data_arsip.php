@@ -7,19 +7,21 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Pastikan id diterima dari parameter query string
+// Ensure id is provided
 if (!isset($_GET['id'])) {
     die("ID not provided.");
 }
 
 $id = $conn->real_escape_string($_GET['id']);
 
-// Query untuk mengambil data dari tabel surat_imb, bangunan, dan pemohon
-$sql = "SELECT s.nomor_sk, s.tanggal, s.tahun, b.jenis_bangunan, b.jumlah_unit, b.jumlah_lantai, b.lokasi_bangunan, b.kecamatan, b.kelurahan, 
-        p.nama_pemohon, p.tempat_dan_tanggal_lahir, p.jenis_kelamin, p.usia, p.pekerjaan, p.alamat, p.no_telp
+// Query to fetch data from surat_imb, bangunan, and pemohon tables
+$sql = "SELECT s.nomor_sk, s.tanggal, s.tahun, 
+        b.id_bangunan, b.jenis_bangunan, b.lokasi_bangunan, b.jumlah_unit, b.jumlah_lantai, b.kecamatan, b.kelurahan, 
+        p.nama_pemohon, p.tempat_dan_tanggal_lahir, p.jenis_kelamin, p.usia, p.pekerjaan, p.alamat, p.no_telp, 
+        b.file_sk
         FROM surat_imb s
         JOIN bangunan b ON s.id_bangunan = b.id_bangunan
-        JOIN pemohon p ON s.id_pemohon = p.id_pemohon
+        JOIN pemohon p ON b.id_pemohon = p.id_pemohon
         WHERE s.nomor_sk = '$id'";
 
 $result = $conn->query($sql);
@@ -174,7 +176,11 @@ if (!$data) {
         </div>
         <div class="action-buttons">
             <button class="delete-button" id="btn_delete"><img src="asset/delete.png" alt="Delete"/>Delete</button>
-            <button class="download-button"><img src="asset/downloads.png" alt="Download" />Download</button>
+            <button class="download-button">
+                <a href="download.php?id=<?php echo htmlspecialchars($data['id_bangunan']); ?>">
+                    <img src="asset/downloads.png" alt="Download" />Download
+                </a>
+            </button>
         </div>
     </div>
     <!-- main content end -->
