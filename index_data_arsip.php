@@ -8,7 +8,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Set the number of items per page
-$items_per_page = 8;
+$items_per_page = 10;
 
 // Get the current page number from the URL, default to 1 if not set
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -17,10 +17,23 @@ $offset = ($page - 1) * $items_per_page;
 // Get the search query from the URL if set
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
 
+// Get the sort parameter from the URL if set
+$sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : '';
+
 // Modify the query to include the search term if provided
 $whereClause = '';
 if ($search) {
     $whereClause = "WHERE s.nomor_sk LIKE ? OR p.nama_pemohon LIKE ? OR s.tanggal LIKE ? OR s.tahun LIKE ?";
+}
+
+// Modify the query to include sorting if set
+$sortClause = '';
+if ($sort_by === 'month') {
+    $sortClause = 'ORDER BY MONTH(s.tanggal) ASC, YEAR(s.tanggal) ASC';
+} elseif ($sort_by === 'year') {
+    $sortClause = 'ORDER BY s.tahun ASC';
+} else {
+    $sortClause = 'ORDER BY s.tanggal DESC';
 }
 
 // Query to count the total number of records with search term
@@ -37,12 +50,12 @@ $count_result = $stmt->get_result();
 $total_items = $count_result->fetch_assoc()['total'];
 $total_pages = ceil($total_items / $items_per_page);
 
-// Query to fetch data with limit and offset
+// Query to fetch data with limit, offset, and sorting
 $sql = "SELECT s.nomor_sk, p.id_pemohon, b.id_bangunan, p.nama_pemohon, s.tanggal, s.tahun 
         FROM surat_imb s 
         JOIN bangunan b ON s.id_bangunan = b.id_bangunan 
         JOIN pemohon p ON b.id_pemohon = p.id_pemohon " . $whereClause . " 
-        ORDER BY s.tanggal DESC 
+        " . $sortClause . " 
         LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
 if ($search) {
@@ -101,7 +114,7 @@ if (!$result) {
     <div class="main-content">
         <h1 class="title-data-arsip">Arsip Data</h1>
         <div class="search-and-filters">
-        <div class="search-container">
+            <div class="search-container">
                 <img src="asset/search-interface-symbol.png" alt="search-icon" class="icon" />
                 <form action="index_data_arsip.php" method="get">
                     <input type="text" name="search" class="search-bar" placeholder="Cari data" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" />
@@ -110,11 +123,11 @@ if (!$result) {
             </div>
             <div class="sort-container">
                 <img src="asset/sort.png" alt="sort-icon" class="icon" />
-                <button class="sort-button">Sort by Month</button>
+                <button class="sort-button" onclick="sortData('month')">Sort by Month</button>
             </div>
             <div class="sort-container">
                 <img src="asset/sort.png" alt="sort-icon" class="icon" />
-                <button class="sort-button">Sort by Year</button>
+                <button class="sort-button" onclick="sortData('year')">Sort by Year</button>
             </div>
             <a href="tambah_data_formulir.php"><button class="add-data-button">+ Tambah Formulir</button></a>
             <a href="tambah_data_sk.php"><button class="add-data-button">+ Tambah SK</button></a>
@@ -173,7 +186,14 @@ if (!$result) {
     <!-- main content end -->
 
     <!-- my javascript -->
-    <script src="./script/detail_script.js"></script>
+    <script src="./script/script_data_arsip.js"></script>
+    <script>
+        function sortData(sortBy) {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('sort_by', sortBy);
+            window.location.href = currentUrl.toString();
+        }
+    </script>
 </body>
 </html>
 
