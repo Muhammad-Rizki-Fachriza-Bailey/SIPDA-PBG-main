@@ -21,7 +21,7 @@ $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : 
 $filter_date = isset($_GET['filter_date']) ? $conn->real_escape_string($_GET['filter_date']) : '';
 
 // Modify the query to include the search term if provided
-$whereClause = 'WHERE s.status = 1'; 
+$whereClause = 'WHERE s.status = 1';  // Only fetch active records
 if ($search) {
     $whereClause .= " AND (s.nomor_sk LIKE ? OR p.nama_pemohon LIKE ? OR s.tanggal LIKE ? OR s.tahun LIKE ?)";
 }
