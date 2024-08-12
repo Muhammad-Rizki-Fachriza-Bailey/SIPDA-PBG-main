@@ -128,7 +128,7 @@ if (!$data) {
             <h2>IDENTITAS SURAT</h2>
             <table>
                 <tr>
-                    <td>Nomor Surat</td>
+                    <td>Nomor SK</td>
                     <td>:</td>
                     <td><?php echo htmlspecialchars($data['nomor_sk']); ?></td>
                 </tr>
@@ -191,13 +191,13 @@ if (!$data) {
     <script>
     document.getElementById('btn_delete').addEventListener('click', function() {
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'Yakin Untuk Menghapus Data ini?',
+        text: "Jika data dihapus, maka tidak dapat dikembalikan!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Ya, Hapus!'
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = 'delete.php?id=<?php echo htmlspecialchars($data['id_bangunan']); ?>';
