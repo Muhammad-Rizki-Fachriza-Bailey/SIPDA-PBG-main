@@ -53,7 +53,7 @@ if ($result->num_rows > 0) {
     <div class="navbar">
       <header>
         <img src="asset/menu.png" alt="menu-icon" class="menu-icon" id="menu-icon"/>
-        <h1 class="welcome">Selamat datang, <?php echo $_SESSION['username']; ?>!</h1>
+        <h2 class="welcome">Selamat datang, <?php echo $_SESSION['username']; ?>!</h2>
         <a href="index_dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
       </header>
     </div>
