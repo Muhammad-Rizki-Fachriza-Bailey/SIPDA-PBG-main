@@ -17,8 +17,8 @@ $offset = ($page - 1) * $items_per_page;
 // Get the search query from the URL if set
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
 
-// Get the filter parameters from the URL if set
-$filter_date = isset($_GET['filter_date']) ? $conn->real_escape_string($_GET['filter_date']) : '';
+// Get the sort parameter from the URL if set
+$sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : '';
 
 // Modify the query to include the search term if provided
 $whereClause = '';
@@ -26,12 +26,17 @@ if ($search) {
     $whereClause = "WHERE s.nomor_sk LIKE ? OR p.nama_pemohon LIKE ? OR s.tanggal LIKE ? OR s.tahun LIKE ?";
 }
 
-// Modify the query to include filters if set
-if ($filter_date) {
-    $whereClause .= $whereClause ? " AND s.tanggal = '$filter_date'" : "WHERE s.tanggal = '$filter_date'";
+// Modify the query to include sorting if set
+$sortClause = '';
+if ($sort_by === 'month') {
+    $sortClause = 'ORDER BY MONTH(s.tanggal) ASC, YEAR(s.tanggal) ASC';
+} elseif ($sort_by === 'year') {
+    $sortClause = 'ORDER BY s.tahun ASC';
+} else {
+    $sortClause = 'ORDER BY s.tanggal DESC';
 }
 
-// Query to count the total number of records with search term and filters
+// Query to count the total number of records with search term
 $count_sql = "SELECT COUNT(*) AS total FROM surat_imb s 
               JOIN bangunan b ON s.id_bangunan = b.id_bangunan 
               JOIN pemohon p ON b.id_pemohon = p.id_pemohon " . $whereClause;
@@ -45,12 +50,12 @@ $count_result = $stmt->get_result();
 $total_items = $count_result->fetch_assoc()['total'];
 $total_pages = ceil($total_items / $items_per_page);
 
-// Query to fetch data with limit, offset, and filters
+// Query to fetch data with limit, offset, and sorting
 $sql = "SELECT s.nomor_sk, p.id_pemohon, b.id_bangunan, p.nama_pemohon, s.tanggal, s.tahun 
         FROM surat_imb s 
         JOIN bangunan b ON s.id_bangunan = b.id_bangunan 
         JOIN pemohon p ON b.id_pemohon = p.id_pemohon " . $whereClause . " 
-        ORDER BY s.tanggal DESC 
+        " . $sortClause . " 
         LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
 if ($search) {
@@ -116,11 +121,13 @@ if (!$result) {
                     <button type="submit" class="search-button">Cari</button>
                 </form>
             </div>
-            <div class="filter-container">
-                <form action="index_data_arsip.php" method="get" class="filter-form">
-                    <input type="date" name="filter_date" class="filter-date" value="<?php echo isset($_GET['filter_date']) ? htmlspecialchars($_GET['filter_date']) : ''; ?>" />
-                    <button type="submit" class="filter-button">Filter</button>
-                </form>
+            <div class="sort-container">
+                <img src="asset/sort.png" alt="sort-icon" class="icon" />
+                <button class="sort-button" onclick="sortData('month')">Sort by Month</button>
+            </div>
+            <div class="sort-container">
+                <img src="asset/sort.png" alt="sort-icon" class="icon" />
+                <button class="sort-button" onclick="sortData('year')">Sort by Year</button>
             </div>
             <a href="tambah_data_formulir.php"><button class="add-data-button">+ Tambah Formulir</button></a>
             <a href="tambah_data_sk.php"><button class="add-data-button">+ Tambah SK</button></a>
@@ -150,18 +157,20 @@ if (!$result) {
                             echo "<td>" . htmlspecialchars($row['nama_pemohon']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['tanggal']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['tahun']) . "</td>";
-                            echo "<td><a href='detail_data_arsip.php?nomor_sk=$nomor_sk&id_pemohon=$id_pemohon&id_bangunan=$id_bangunan' class='view-link'>Detail</a></td>";
-                            echo "<td><a href='edit_data_arsip.php?nomor_sk=$nomor_sk&id_pemohon=$id_pemohon&id_bangunan=$id_bangunan' class='edit-link'>Edit</a> | <a href='delete_data_arsip.php?nomor_sk=$nomor_sk&id_pemohon=$id_pemohon&id_bangunan=$id_bangunan' class='delete-link' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>Delete</a></td>";
+                            echo "<td><a href='detail_data_arsip.php?id=$nomor_sk'>Lihat detail >></a></td>";
+                            echo "<td>
+                                    <a href='update_data_arsip.php?id=$id_pemohon' class='edit-button'>Edit Arsip</a> |
+                                    <a href='edit_data_sk.php?id=$id_bangunan' class='edit-button'>Edit SK</a>
+                                  </td>";
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='6'>Tidak ada data ditemukan.</td></tr>";
+                        echo "<tr><td colspan='6'>No records found</td></tr>";
                     }
                     ?>
                 </tbody>
             </table>
-        </div>
-        <div class="pagination">
+            <div class="pagination">
                 <?php if ($page > 1): ?>
                     <a href="index_data_arsip.php?page=<?php echo $page - 1; ?>"><<</a>
                 <?php endif; ?>
@@ -172,11 +181,23 @@ if (!$result) {
                     <a href="index_data_arsip.php?page=<?php echo $page + 1; ?>">>></a>
                 <?php endif; ?>
             </div>
+        </div>
     </div>
     <!-- main content end -->
+
+    <!-- my javascript -->
+    <script src="./script/script_data_arsip.js"></script>
+    <script>
+        function sortData(sortBy) {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('sort_by', sortBy);
+            window.location.href = currentUrl.toString();
+        }
+    </script>
 </body>
 </html>
 
 <?php
+$stmt->close();
 $conn->close();
 ?>
