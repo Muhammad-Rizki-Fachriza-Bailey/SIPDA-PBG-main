@@ -14,7 +14,7 @@ if (!isset($_GET['id'])) {
 
 $id = $conn->real_escape_string($_GET['id']);
 
-// Query to fetch data from surat_imb, bangunan, and pemohon tables
+
 $sql = "SELECT s.nomor_sk, s.tanggal, s.tahun, 
         b.id_bangunan, b.jenis_bangunan, b.lokasi_bangunan, b.jumlah_unit, b.jumlah_lantai, b.kecamatan, b.kelurahan, 
         p.nama_pemohon, p.tempat_dan_tanggal_lahir, p.jenis_kelamin, p.usia, p.pekerjaan, p.alamat, p.no_telp, 
@@ -22,7 +22,8 @@ $sql = "SELECT s.nomor_sk, s.tanggal, s.tahun,
         FROM surat_imb s
         JOIN bangunan b ON s.id_bangunan = b.id_bangunan
         JOIN pemohon p ON b.id_pemohon = p.id_pemohon
-        WHERE s.nomor_sk = '$id'";
+        WHERE s.nomor_sk = '$id' AND s.status = 'active' AND b.status = 'active' AND p.status = 'active'";
+
 
 
 $result = $conn->query($sql);

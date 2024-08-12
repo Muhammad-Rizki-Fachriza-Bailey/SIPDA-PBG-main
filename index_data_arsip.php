@@ -21,14 +21,14 @@ $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : 
 $filter_date = isset($_GET['filter_date']) ? $conn->real_escape_string($_GET['filter_date']) : '';
 
 // Modify the query to include the search term if provided
-$whereClause = '';
+$whereClause = 'WHERE s.status = 1'; 
 if ($search) {
-    $whereClause = "WHERE s.nomor_sk LIKE ? OR p.nama_pemohon LIKE ? OR s.tanggal LIKE ? OR s.tahun LIKE ?";
+    $whereClause .= " AND (s.nomor_sk LIKE ? OR p.nama_pemohon LIKE ? OR s.tanggal LIKE ? OR s.tahun LIKE ?)";
 }
 
 // Modify the query to include filters if set
 if ($filter_date) {
-    $whereClause .= $whereClause ? " AND s.tanggal = '$filter_date'" : "WHERE s.tanggal = '$filter_date'";
+    $whereClause .= " AND s.tanggal = '$filter_date'";
 }
 
 // Query to count the total number of records with search term and filters
