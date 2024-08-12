@@ -5,6 +5,7 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
+
 // Query untuk menghitung total data tamu
 $sql = "SELECT COUNT(*) as total_pemohon FROM pemohon";
 $result = $conn->query($sql);
@@ -15,7 +16,6 @@ if ($result->num_rows > 0) {
     $total_pemohon = $row['total_pemohon'];
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +45,6 @@ if ($result->num_rows > 0) {
           <a href="index_data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
         </li>
       </ul>
-      <<?php echo $_SESSION['username']; ?>!</h1>
       <a href="logout.php"><button>Logout</button></a>
     </div>
     <!-- sidebar end -->
@@ -54,6 +53,7 @@ if ($result->num_rows > 0) {
     <div class="navbar">
       <header>
         <img src="asset/menu.png" alt="menu-icon" class="menu-icon" id="menu-icon"/>
+        <h1 class="welcome">Selamat datang, <?php echo $_SESSION['username']; ?>!</h1>
         <a href="index_dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
       </header>
     </div>
