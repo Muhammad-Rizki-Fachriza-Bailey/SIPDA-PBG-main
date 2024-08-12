@@ -18,11 +18,12 @@ $id = $conn->real_escape_string($_GET['id']);
 $sql = "SELECT s.nomor_sk, s.tanggal, s.tahun, 
         b.id_bangunan, b.jenis_bangunan, b.lokasi_bangunan, b.jumlah_unit, b.jumlah_lantai, b.kecamatan, b.kelurahan, 
         p.nama_pemohon, p.tempat_dan_tanggal_lahir, p.jenis_kelamin, p.usia, p.pekerjaan, p.alamat, p.no_telp, 
-        b.file_sk
+        p.file_formulir_permohonan, b.file_sk
         FROM surat_imb s
         JOIN bangunan b ON s.id_bangunan = b.id_bangunan
         JOIN pemohon p ON b.id_pemohon = p.id_pemohon
         WHERE s.nomor_sk = '$id'";
+
 
 $result = $conn->query($sql);
 
@@ -83,97 +84,125 @@ if (!$data) {
         <h1 class="title-data-arsip">Detail Data Arsip</h1>
         <button class="button-back"><a href="index_data_arsip.php" class="back">back</a></button>
 
-        <!-- Identity sections -->
-        <div class="identity-section">
-            <h2>IDENTITAS DIRI</h2>
-            <table>
-                <tr>
-                    <td>Nama</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['nama_pemohon']); ?></td>
-                </tr>
-                <tr>
-                    <td>Tempat dan Tanggal Lahir</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['tempat_dan_tanggal_lahir']); ?></td>
-                </tr>
-                <tr>
-                    <td>Alamat</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['alamat']); ?></td>
-                </tr>
-                <tr>
-                    <td>Jenis Kelamin</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['jenis_kelamin']); ?></td>
-                </tr>
-                <tr>
-                    <td>Usia</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['usia']); ?></td>
-                </tr>
-                <tr>
-                    <td>Pekerjaan</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['pekerjaan']); ?></td>
-                </tr>
-                <tr>
-                    <td>Nomor Telepon</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['no_telp']); ?></td>
-                </tr>
-            </table>
-        </div>
-        <div class="identity-section">
-            <h2>IDENTITAS SURAT</h2>
-            <table>
-                <tr>
-                    <td>Nomor SK</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['nomor_sk']); ?></td>
-                </tr>
-                <tr>
-                    <td>Tanggal</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['tanggal']); ?></td>
-                </tr>
-                <tr>
-                    <td>Tahun</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['tahun']); ?></td>
-                </tr>
-                <tr>
-                    <td>Jenis Bangunan</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['jenis_bangunan']); ?></td>
-                </tr>
-                <tr>
-                    <td>Jumlah Unit</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['jumlah_unit']); ?></td>
-                </tr>
-                <tr>
-                    <td>Jumlah Lantai</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['jumlah_lantai']); ?></td>
-                </tr>
-                <tr>
-                    <td>Lokasi Bangunan</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['lokasi_bangunan']); ?></td>
-                </tr>
-                <tr>
-                    <td>Kecamatan</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['kecamatan']); ?></td>
-                </tr>
-                <tr>
-                    <td>Kelurahan</td>
-                    <td>:</td>
-                    <td><?php echo htmlspecialchars($data['kelurahan']); ?></td>
-                </tr>
-            </table>
-        </div>
+       <!-- Identity sections -->
+<div class="identity-section">
+    <h2>IDENTITAS DIRI</h2>
+    <table>
+        <tr>
+            <td>Nama</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['nama_pemohon']); ?></td>
+        </tr>
+        <tr>
+            <td>Tempat dan Tanggal Lahir</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['tempat_dan_tanggal_lahir']); ?></td>
+        </tr>
+        <tr>
+            <td>Alamat</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['alamat']); ?></td>
+        </tr>
+        <tr>
+            <td>Jenis Kelamin</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['jenis_kelamin']); ?></td>
+        </tr>
+        <tr>
+            <td>Usia</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['usia']); ?></td>
+        </tr>
+        <tr>
+            <td>Pekerjaan</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['pekerjaan']); ?></td>
+        </tr>
+        <tr>
+            <td>Nomor Telepon</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['no_telp']); ?></td>
+        </tr>
+        <tr>
+            <td>File Formulir Permohonan</td>
+            <td>:</td>
+            <td>
+                <?php
+                if ($data['file_formulir_permohonan']) {
+                    echo "<a href='" . htmlspecialchars($data['file_formulir_permohonan']) . "' target='_blank'>Lihat File</a>";
+                } else {
+                    echo "Tidak ada file tersedia";
+                }
+                ?>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="identity-section">
+    <h2>IDENTITAS SURAT</h2>
+    <table>
+        <tr>
+            <td>Nomor SK</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['nomor_sk']); ?></td>
+        </tr>
+        <tr>
+            <td>Tanggal</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['tanggal']); ?></td>
+        </tr>
+        <tr>
+            <td>Tahun</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['tahun']); ?></td>
+        </tr>
+        <tr>
+            <td>Jenis Bangunan</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['jenis_bangunan']); ?></td>
+        </tr>
+        <tr>
+            <td>Jumlah Unit</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['jumlah_unit']); ?></td>
+        </tr>
+        <tr>
+            <td>Jumlah Lantai</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['jumlah_lantai']); ?></td>
+        </tr>
+        <tr>
+            <td>Lokasi Bangunan</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['lokasi_bangunan']); ?></td>
+        </tr>
+        <tr>
+            <td>Kecamatan</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['kecamatan']); ?></td>
+        </tr>
+        <tr>
+            <td>Kelurahan</td>
+            <td>:</td>
+            <td><?php echo htmlspecialchars($data['kelurahan']); ?></td>
+        </tr>
+        <tr>
+            <td>File SK Bangunan</td>
+            <td>:</td>
+            <td>
+                <?php
+                if ($data['file_sk']) {
+                    echo "<a href='" . htmlspecialchars($data['file_sk']) . "' target='_blank'>Lihat File</a>";
+                } else {
+                    echo "Tidak ada file tersedia";
+                }
+                ?>
+            </td>
+        </tr>
+    </table>
+</div>
+
         <div class="action-buttons">
             <button class="delete-button" id="btn_delete"><img src="asset/delete.png" alt="Delete"/>Delete</button>
             <button class="download-button">
