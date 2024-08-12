@@ -17,8 +17,8 @@ $offset = ($page - 1) * $items_per_page;
 // Get the search query from the URL if set
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
 
-// Get the sort parameter from the URL if set
-$sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : '';
+// Get the filter parameters from the URL if set
+$filter_date = isset($_GET['filter_date']) ? $conn->real_escape_string($_GET['filter_date']) : '';
 
 // Modify the query to include the search term if provided
 $whereClause = '';
@@ -26,17 +26,12 @@ if ($search) {
     $whereClause = "WHERE s.nomor_sk LIKE ? OR p.nama_pemohon LIKE ? OR s.tanggal LIKE ? OR s.tahun LIKE ?";
 }
 
-// Modify the query to include sorting if set
-$sortClause = '';
-if ($sort_by === 'month') {
-    $sortClause = 'ORDER BY MONTH(s.tanggal) ASC, YEAR(s.tanggal) ASC';
-} elseif ($sort_by === 'year') {
-    $sortClause = 'ORDER BY s.tahun ASC';
-} else {
-    $sortClause = 'ORDER BY s.tanggal DESC';
+// Modify the query to include filters if set
+if ($filter_date) {
+    $whereClause .= $whereClause ? " AND s.tanggal = '$filter_date'" : "WHERE s.tanggal = '$filter_date'";
 }
 
-// Query to count the total number of records with search term
+// Query to count the total number of records with search term and filters
 $count_sql = "SELECT COUNT(*) AS total FROM surat_imb s 
               JOIN bangunan b ON s.id_bangunan = b.id_bangunan 
               JOIN pemohon p ON b.id_pemohon = p.id_pemohon " . $whereClause;
@@ -50,12 +45,12 @@ $count_result = $stmt->get_result();
 $total_items = $count_result->fetch_assoc()['total'];
 $total_pages = ceil($total_items / $items_per_page);
 
-// Query to fetch data with limit, offset, and sorting
+// Query to fetch data with limit, offset, and filters
 $sql = "SELECT s.nomor_sk, p.id_pemohon, b.id_bangunan, p.nama_pemohon, s.tanggal, s.tahun 
         FROM surat_imb s 
         JOIN bangunan b ON s.id_bangunan = b.id_bangunan 
         JOIN pemohon p ON b.id_pemohon = p.id_pemohon " . $whereClause . " 
-        " . $sortClause . " 
+        ORDER BY s.tanggal DESC 
         LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
 if ($search) {
@@ -121,13 +116,11 @@ if (!$result) {
                     <button type="submit" class="search-button">Cari</button>
                 </form>
             </div>
-            <div class="sort-container">
-                <img src="asset/sort.png" alt="sort-icon" class="icon" />
-                <button class="sort-button" onclick="sortData('month')">Sort by Month</button>
-            </div>
-            <div class="sort-container">
-                <img src="asset/sort.png" alt="sort-icon" class="icon" />
-                <button class="sort-button" onclick="sortData('year')">Sort by Year</button>
+            <div class="filter-container">
+                <form action="index_data_arsip.php" method="get" class="filter-form">
+                    <input type="date" name="filter_date" class="filter-date" value="<?php echo isset($_GET['filter_date']) ? htmlspecialchars($_GET['filter_date']) : ''; ?>" />
+                    <button type="submit" class="filter-button">Filter</button>
+                </form>
             </div>
             <a href="tambah_data_formulir.php"><button class="add-data-button">+ Tambah Formulir</button></a>
             <a href="tambah_data_sk.php"><button class="add-data-button">+ Tambah SK</button></a>

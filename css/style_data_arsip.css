@@ -172,7 +172,32 @@ body {
   background-color: #f5c6a5;
 }
 
-.sort-button,
+.filter-date{
+  padding: 10px, 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 200px;
+  background-color: var(--sidecolor);
+  color: var(--primary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.filter-button {
+  background-color: var(--sidecolor);
+  color: var(--primary);
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.filter-button:hover {
+  background-color: #f5c6a5;
+}
+
 .add-data-button {
   padding: 10px 35px 10px 35px;
   border: none;
@@ -183,7 +208,6 @@ body {
   transition: background 0.3s;
 }
 
-.sort-button:hover,
 .add-data-button:hover {
   background-color: #35495d;
 }
