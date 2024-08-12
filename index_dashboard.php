@@ -63,18 +63,40 @@ if ($result->num_rows > 0) {
     <div class="main-content">
       <h1 class="title-dashboard">Dashboard</h1>
       <div class="cards">
-        <div class="card">
-          <h1>Data Arsip</h1>
-          <img src="asset/folder.png" alt="folder-icon" />
-          <h1><?php echo $total_pemohon; ?></h1>
-          <hr>
-          <p>Total Data Arsip Tersimpan</p>
-        </div>
-      </div>
+  <div class="card">
+    <h1>Data Arsip</h1>
+    <img src="asset/folder.png" alt="folder-icon" />
+    <h1><?php echo $total_pemohon; ?></h1>
+    <hr>
+    <p>Total Data Arsip Tersimpan</p>
+  </div>
+  
+  <div class="card calendar-card">
+    <h1>Kalender</h1>
+    <div id="calendar"></div>
+    <hr>
+    <p>Agenda Bulanan</p>
+  </div>
+</div>
+
     </div>
     <!-- main content end -->
 
     <!-- my javascript -->
     <script src="./script/script_dashboard.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function() {
+        $("#calendar").datepicker(); // Menginisialisasi kalender
+      });
+    </script>
+
+
+
   </body>
 </html>
