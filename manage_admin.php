@@ -12,6 +12,9 @@
 
     <!-- My style -->
     <link rel="stylesheet" href="./css/manage_admin.css">
+    
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -87,7 +90,7 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="adminData">
                     <?php
                     // Query untuk mengambil data dari tabel login_admin
                     $sql = "SELECT id, username, password FROM login_admin";
@@ -97,33 +100,18 @@
                         // Menampilkan data untuk setiap baris
                         $no = 1;
                         while($row = $result->fetch_assoc()) {
-                            echo "<tr>";
+                            echo "<tr id='row-" . $row["id"] . "'>";
                             echo "<td>" . $no++ . "</td>";
                             echo "<td>" . $row["username"] . "</td>";
                             echo "<td>" . $row["password"] . "</td>";
                             echo "<td>
                                     <a href='manage_admin.php?edit=" . $row["id"] . "' class='edit-btn'>Ubah</a>
-                                    <a href='manage_admin.php?delete=" . $row["id"] . "' class='delete-btn'>Hapus</a>
+                                    <button class='delete-btn' data-id='" . $row["id"] . "'>Hapus</button>
                                   </td>";
                             echo "</tr>";
                         }
                     } else {
                         echo "<tr><td colspan='4'>Tidak ada data admin.</td></tr>";
-                    }
-
-                    // Menghapus data admin
-                    if (isset($_GET['delete'])) {
-                        $deleteId = $_GET['delete'];
-                        $sql = "DELETE FROM login_admin WHERE id='$deleteId'";
-
-                        if ($conn->query($sql) === TRUE) {
-                            echo "<p class='success'>Data admin berhasil dihapus.</p>";
-                        } else {
-                            echo "<p class='error'>Error: " . $conn->error . "</p>";
-                        }
-
-                        // Refresh halaman setelah penghapusan
-                        echo "<script>window.location.href='manage_admin.php';</script>";
                     }
 
                     $conn->close();
@@ -132,5 +120,32 @@
             </table>
         </div>
     </div>
+
+    <!-- Script untuk menangani penghapusan dengan AJAX -->
+    <script>
+        $(document).ready(function(){
+            $('.delete-btn').on('click', function(){
+                var id = $(this).data('id');
+                var row = '#row-' + id;
+
+                if(confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                    $.ajax({
+                        url: 'delete_admin.php',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function(response) {
+                            if(response == 1) {
+                                $(row).fadeOut('slow', function(){
+                                    $(this).remove();
+                                });
+                            } else {
+                                alert('Penghapusan data gagal.');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
