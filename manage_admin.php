@@ -17,14 +17,62 @@
     <div class="container">
         <h2>Masukkan Data Admin Baru</h2>
         <div class="form-container">
+            <?php
+            include 'connect.php';
+
+            // Deklarasi variabel untuk menyimpan data yang akan diedit
+            $editMode = false;
+            $editId = '';
+            $editUsername = '';
+            $editPassword = '';
+
+            // Cek apakah dalam mode edit
+            if (isset($_GET['edit'])) {
+                $editMode = true;
+                $editId = $_GET['edit'];
+                
+                // Ambil data admin berdasarkan ID untuk diedit
+                $sql = "SELECT * FROM login_admin WHERE id='$editId'";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $editUsername = $row['username'];
+                    $editPassword = $row['password'];
+                }
+            }
+
+            // Menyimpan atau memperbarui data admin
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+
+                if ($editMode) {
+                    // Query untuk memperbarui data admin
+                    $sql = "UPDATE login_admin SET username='$username', password='$password' WHERE id='$editId'";
+                } else {
+                    // Query untuk menyimpan data admin baru
+                    $sql = "INSERT INTO login_admin (username, password) VALUES ('$username', '$password')";
+                }
+
+                if ($conn->query($sql) === TRUE) {
+                    echo "<p class='success'>Data admin berhasil " . ($editMode ? "diperbarui" : "disimpan") . ".</p>";
+                    $editMode = false; // Kembali ke mode tambah setelah update
+                } else {
+                    echo "<p class='error'>Error: " . $sql . "<br>" . $conn->error . "</p>";
+                }
+            }
+            ?>
+            
+            <!-- Form untuk input data admin -->
             <form action="#" method="POST">
+                <input type="hidden" name="id" value="<?php echo $editId; ?>">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" value="<?php echo $editUsername; ?>" required>
 
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" value="<?php echo $editPassword; ?>" required>
 
-                <button type="submit">Simpan Data</button>
+                <button type="submit"><?php echo $editMode ? 'Perbarui Data' : 'Simpan Data'; ?></button>
             </form>
         </div>
 
@@ -41,24 +89,6 @@
                 </thead>
                 <tbody>
                     <?php
-                    // Menghubungkan ke database
-                    include 'connect.php';
-
-                    // Menyimpan data admin baru jika form disubmit
-                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        $username = $_POST['username'];
-                        $password = $_POST['password'];
-
-                        // Query untuk menyimpan data ke tabel login_admin
-                        $sql = "INSERT INTO login_admin (username, password) VALUES ('$username', '$password')";
-
-                        if ($conn->query($sql) === TRUE) {
-                            echo "Data admin berhasil disimpan";
-                        } else {
-                            echo "Error: " . $sql . "<br>" . $conn->error;
-                        }
-                    }
-
                     // Query untuk mengambil data dari tabel login_admin
                     $sql = "SELECT id, username, password FROM login_admin";
                     $result = $conn->query($sql);
@@ -72,13 +102,28 @@
                             echo "<td>" . $row["username"] . "</td>";
                             echo "<td>" . $row["password"] . "</td>";
                             echo "<td>
-                                    <button class='edit-btn'>Ubah</button>
-                                    <button class='delete-btn'>Hapus</button>
+                                    <a href='manage_admin.php?edit=" . $row["id"] . "' class='edit-btn'>Ubah</a>
+                                    <a href='manage_admin.php?delete=" . $row["id"] . "' class='delete-btn'>Hapus</a>
                                   </td>";
                             echo "</tr>";
                         }
                     } else {
                         echo "<tr><td colspan='4'>Tidak ada data admin.</td></tr>";
+                    }
+
+                    // Menghapus data admin
+                    if (isset($_GET['delete'])) {
+                        $deleteId = $_GET['delete'];
+                        $sql = "DELETE FROM login_admin WHERE id='$deleteId'";
+
+                        if ($conn->query($sql) === TRUE) {
+                            echo "<p class='success'>Data admin berhasil dihapus.</p>";
+                        } else {
+                            echo "<p class='error'>Error: " . $conn->error . "</p>";
+                        }
+
+                        // Refresh halaman setelah penghapusan
+                        echo "<script>window.location.href='manage_admin.php';</script>";
                     }
 
                     $conn->close();

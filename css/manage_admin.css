@@ -96,24 +96,32 @@ table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-.edit-btn {
-    background-color: #28a745;
-    color: white;
-    border: none;
+.edit-btn, .delete-btn {
     padding: 5px 10px;
     border-radius: 3px;
     cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #28a745;
 }
 
 .delete-btn {
     background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
 }
 
 td:nth-child(3) {
     width: 50%; /* Lebar kolom password lebih fleksibel */
+}
+
+.success {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.error {
+    color: #dc3545;
+    font-weight: bold;
 }
