@@ -188,5 +188,7 @@ $result_pemohon = $conn->query($sql_pemohon);
             window.location.href = 'index_data_arsip.php';
         });
     </script>
+
+    <script src="./script/menu_fuction.js"></script>
 </body>
 </html>

@@ -216,7 +216,7 @@ $result_pemohon = $conn->query($sql_pemohon);
     </div>
     <!-- main content end -->
 
-    <script src="script.js"></script>
+    <script src="./script/menu_fuction.js"></script>
     <script>
         document.getElementById('btn-cancel').addEventListener('click', function() {
             window.location.href = 'index_data_arsip.php';

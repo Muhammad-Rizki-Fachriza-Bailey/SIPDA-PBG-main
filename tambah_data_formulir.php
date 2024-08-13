@@ -89,6 +89,6 @@
       <!-- main content end -->
 
     <!-- my javascript -->
-    <script src="./script/tambah_script.js"></script>
+    <script src="./script/menu_fuction.js"></script>
 </body>
 </html>

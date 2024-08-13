@@ -179,7 +179,7 @@ if (!$result) {
     <!-- main content end -->
 
     <!-- my javascript -->
-    <script src="./script/script_data_arsip.js"></script>
+    <script src="./script/menu_fuction.js"></script>
     <script>
         function sortData(sortBy) {
             const currentUrl = new URL(window.location.href);

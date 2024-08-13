@@ -83,7 +83,7 @@ if ($result->num_rows > 0) {
     <!-- main content end -->
 
     <!-- my javascript -->
-    <script src="./script/script_dashboard.js"></script>
+    <script src="./script/menu_fuction.js"></script>
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
