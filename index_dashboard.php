@@ -63,21 +63,21 @@ if ($result->num_rows > 0) {
     <div class="main-content">
       <h1 class="title-dashboard">Dashboard</h1>
       <div class="cards">
-  <div class="card">
-    <h1>Data Arsip</h1>
-    <img src="asset/folder.png" alt="folder-icon" />
-    <h1><?php echo $total_pemohon; ?></h1>
-    <hr>
-    <p>Total Data Arsip Tersimpan</p>
-  </div>
+        <div class="card">
+          <h1>Data Arsip</h1>
+          <img src="asset/folder.png" alt="folder-icon" />
+          <h1><?php echo $total_pemohon; ?></h1>
+          <hr>
+          <p>Total Data Arsip Tersimpan</p>
+        </div>
   
-  <div class="card calendar-card">
-    <h1>Kalender</h1>
-    <div id="calendar"></div>
-    <hr>
-    <p>Agenda Bulanan</p>
-  </div>
-</div>
+        <div class="card calendar-card">
+          <h1>Kalender</h1>
+          <div id="calendar"></div>
+          <hr>
+          <p>Agenda Bulanan</p>
+        </div>
+      </div>
 
     </div>
     <!-- main content end -->
