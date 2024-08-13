@@ -1,0 +1,119 @@
+:root {
+    --primary: #405d72;
+    --bg: #758694;
+    --sidecolor: #f7e7dc;
+}
+  
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    background-color: var(--primary);
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 90%; /* Lebar container diperluas */
+    max-width: 1200px; /* Maksimum lebar */
+}
+
+h2, h3 {
+    color: #333;
+    text-align: left;
+    border-left: 5px solid #007bff;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    width: 40%; /* Lebar form diperluas */
+    float: left;
+    margin-right: 5%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+.table-container {
+    width: 55%; /* Lebar tabel diperluas */
+    float: left;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    word-break: break-all; /* Agar teks panjang tidak keluar dari sel */
+}
+
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.edit-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+td:nth-child(3) {
+    width: 50%; /* Lebar kolom password lebih fleksibel */
+}
