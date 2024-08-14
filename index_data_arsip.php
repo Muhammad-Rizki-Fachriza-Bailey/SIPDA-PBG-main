@@ -91,6 +91,9 @@ if (!$result) {
             <li>
                 <a href="index_data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
             </li>
+            <li>
+                <a href="manage_admin.php" class="arsip"><img src="asset/group.png" alt="group-icon" class="archive-icon"/>Buat Akun</a><hr>
+            </li>
         </ul>
         <a href="login.php"><button>LogOut</button></a>
     </div>
