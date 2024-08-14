@@ -18,7 +18,8 @@ $offset = ($page - 1) * $items_per_page;
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
 
 // Get the filter parameters from the URL if set
-$filter_date = isset($_GET['filter_date']) ? $conn->real_escape_string($_GET['filter_date']) : '';
+$filter_criteria = isset($_GET['filter_criteria']) ? $conn->real_escape_string($_GET['filter_criteria']) : '';
+$filter_value = isset($_GET['filter_value']) ? $conn->real_escape_string($_GET['filter_value']) : '';
 
 // Modify the query to include the search term if provided
 $whereClause = 'WHERE s.status = 1';  // Only fetch active records
@@ -26,9 +27,15 @@ if ($search) {
     $whereClause .= " AND (s.nomor_sk LIKE ? OR p.nama_pemohon LIKE ? OR s.tanggal LIKE ? OR s.tahun LIKE ?)";
 }
 
-// Modify the query to include filters if set
-if ($filter_date) {
-    $whereClause .= " AND s.tanggal = '$filter_date'";
+// Add filter criteria to the query
+if ($filter_criteria && $filter_value) {
+    if ($filter_criteria === 'kecamatan') {
+        $whereClause .= " AND b.kecamatan = '$filter_value'";
+    } elseif ($filter_criteria === 'kelurahan') {
+        $whereClause .= " AND b.kelurahan = '$filter_value'";
+    } elseif ($filter_criteria === 'jenis_bangunan') {
+        $whereClause .= " AND b.jenis_bangunan = '$filter_value'";
+    }
 }
 
 // Query to count the total number of records with search term and filters
@@ -121,10 +128,21 @@ if (!$result) {
             </div>
             <div class="filter-container">
                 <form action="index_data_arsip.php" method="get" class="filter-form">
-                    <input type="date" name="filter_date" class="filter-date" value="<?php echo isset($_GET['filter_date']) ? htmlspecialchars($_GET['filter_date']) : ''; ?>" />
-                    <button type="submit" class="filter-button">Filter</button>
-                </form>
-            </div>
+                    <select name="filter_criteria" id="filter_criteria" class="filter-date" onchange="updateFilters()">
+                        <option value="">Pilih Kriteria</option>
+                        <option value="kecamatan" <?php echo ($filter_criteria == 'kecamatan') ? 'selected' : ''; ?>>Kecamatan</option>
+                        <option value="kelurahan" <?php echo ($filter_criteria == 'kelurahan') ? 'selected' : ''; ?>>Kelurahan</option>
+                        <option value="jenis_bangunan" <?php echo ($filter_criteria == 'jenis_bangunan') ? 'selected' : ''; ?>>Jenis Bangunan</option>
+                    </select>
+                    
+                    <select name="filter_value" id="filter_value" class="filter-date" style="<?php echo $filter_criteria ? '' : 'display:none;'; ?>">
+                        <!-- Options will be populated dynamically -->
+                        <?php if ($filter_value) echo "<option value='$filter_value' selected>$filter_value</option>"; ?>
+                    </select>
+        <button type="submit" class="filter-button">Filter</button>
+    </form>
+</div>
+
             <a href="tambah_data_formulir.php"><button class="add-data-button">+ Tambah Formulir</button></a>
             <a href="tambah_data_sk.php"><button class="add-data-button">+ Tambah SK</button></a>
         </div>
@@ -161,7 +179,7 @@ if (!$result) {
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='6'>No records found</td></tr>";
+                        echo "<tr><td colspan='6'>Tidak Ada data yang ditemukan</td></tr>";
                     }
                     ?>
                 </tbody>
@@ -184,11 +202,37 @@ if (!$result) {
     <!-- my javascript -->
     <script src="./script/menu_fuction.js"></script>
     <script>
-        function sortData(sortBy) {
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('sort_by', sortBy);
-            window.location.href = currentUrl.toString();
+    function updateFilters() {
+        var criteria = document.getElementById('filter_criteria').value;
+        var filterValue = document.getElementById('filter_value');
+
+        filterValue.style.display = 'none'; // Hide the second dropdown by default
+        filterValue.innerHTML = ''; // Clear existing options
+
+        if (criteria) {
+            filterValue.style.display = 'block'; // Show the second dropdown
+            var options = [];
+
+            if (criteria === 'kecamatan') {
+                options = ['Kecamatan A', 'Kecamatan B', 'Kecamatan C'];
+            } else if (criteria === 'kelurahan') {
+                options = ['Kelurahan X', 'Kelurahan Y', 'Kelurahan Z'];
+            } else if (criteria === 'jenis_bangunan') {
+                options = ['Bangunan 1', 'Bangunan 2', 'Bangunan 3'];
+            }
+
+            // Populate the second dropdown
+            options.forEach(function(option) {
+                var opt = document.createElement('option');
+                opt.value = option;
+                opt.innerHTML = option;
+                filterValue.appendChild(opt);
+            });
         }
+    }
+
+    // Automatically trigger the filter update if a filter criteria was already selected
+    <?php if ($filter_criteria) echo "updateFilters();"; ?>
     </script>
 </body>
 </html>
