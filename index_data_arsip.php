@@ -109,6 +109,9 @@ $result = $stmt->get_result();
 if (!$result) {
     die("Query failed: " . $conn->error);
 }
+
+// Check if the user is Admin1
+$is_admin1 = isset($_SESSION['username']) && $_SESSION['username'] === 'Admin1';
 ?>
 
 <!DOCTYPE html>
@@ -136,9 +139,11 @@ if (!$result) {
             <li>
                 <a href="index_data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
             </li>
-            <li>
-                <a href="manage_admin.php" class="arsip"><img src="asset/group.png" alt="group-icon" class="archive-icon"/>Buat Akun</a><hr>
-            </li>
+            <?php if ($is_admin1): ?>
+                <li>
+                    <a href="manage_admin.php" class="arsip"><img src="asset/group.png" alt="group-icon" class="archive-icon"/>Buat Akun</a><hr>
+                </li>
+            <?php endif; ?>
         </ul>
         <a href="login.php"><button>LogOut</button></a>
     </div>
