@@ -21,21 +21,53 @@ $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : 
 $filter_criteria = isset($_GET['filter_criteria']) ? $conn->real_escape_string($_GET['filter_criteria']) : '';
 $filter_value = isset($_GET['filter_value']) ? $conn->real_escape_string($_GET['filter_value']) : '';
 
-// Modify the query to include the search term if provided
-$whereClause = 'WHERE s.status = 1';  // Only fetch active records
-if ($search) {
-    $whereClause .= " AND (s.nomor_sk LIKE ? OR p.nama_pemohon LIKE ? OR s.tanggal LIKE ? OR s.tahun LIKE ?)";
+// Retrieve dynamic filter options from the database
+$kecamatan_options = [];
+$kelurahan_options = [];
+$jenis_bangunan_options = [];
+
+// Query to fetch distinct values for Kecamatan
+$query = "SELECT DISTINCT kecamatan FROM bangunan";
+$result = $conn->query($query);
+while ($row = $result->fetch_assoc()) {
+    $kecamatan_options[] = $row['kecamatan'];
 }
 
-// Add filter criteria to the query
+// Query to fetch distinct values for Kelurahan
+$query = "SELECT DISTINCT kelurahan FROM bangunan";
+$result = $conn->query($query);
+while ($row = $result->fetch_assoc()) {
+    $kelurahan_options[] = $row['kelurahan'];
+}
+
+// Query to fetch distinct values for Jenis Bangunan
+$query = "SELECT DISTINCT jenis_bangunan FROM bangunan";
+$result = $conn->query($query);
+while ($row = $result->fetch_assoc()) {
+    $jenis_bangunan_options[] = $row['jenis_bangunan'];
+}
+
+// Modify the query to include the search term and filters if provided
+$whereClause = 'WHERE s.status = 1';  // Only fetch active records
+$filterValues = [];
+$types = '';
+
+if ($search) {
+    $whereClause .= " AND (s.nomor_sk LIKE ? OR p.nama_pemohon LIKE ? OR s.tanggal LIKE ? OR s.tahun LIKE ?)";
+    $filterValues = array_fill(0, 4, "%$search%");
+    $types .= 'ssss';  // four string parameters
+}
+
 if ($filter_criteria && $filter_value) {
     if ($filter_criteria === 'kecamatan') {
-        $whereClause .= " AND b.kecamatan = '$filter_value'";
+        $whereClause .= " AND b.kecamatan = ?";
     } elseif ($filter_criteria === 'kelurahan') {
-        $whereClause .= " AND b.kelurahan = '$filter_value'";
+        $whereClause .= " AND b.kelurahan = ?";
     } elseif ($filter_criteria === 'jenis_bangunan') {
-        $whereClause .= " AND b.jenis_bangunan = '$filter_value'";
+        $whereClause .= " AND b.jenis_bangunan = ?";
     }
+    $filterValues[] = $filter_value;
+    $types .= 's';  // one more string parameter
 }
 
 // Query to count the total number of records with search term and filters
@@ -43,10 +75,12 @@ $count_sql = "SELECT COUNT(*) AS total FROM surat_imb s
               JOIN bangunan b ON s.id_bangunan = b.id_bangunan 
               JOIN pemohon p ON b.id_pemohon = p.id_pemohon " . $whereClause;
 $stmt = $conn->prepare($count_sql);
-if ($search) {
-    $searchTerm = "%$search%";
-    $stmt->bind_param('ssss', $searchTerm, $searchTerm, $searchTerm, $searchTerm);
+
+if ($filterValues) {
+    $params = array_merge([$types], $filterValues);
+    $stmt->bind_param(...$params);
 }
+
 $stmt->execute();
 $count_result = $stmt->get_result();
 $total_items = $count_result->fetch_assoc()['total'];
@@ -60,11 +94,15 @@ $sql = "SELECT s.nomor_sk, p.id_pemohon, b.id_bangunan, p.nama_pemohon, s.tangga
         ORDER BY s.tanggal DESC 
         LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
-if ($search) {
-    $stmt->bind_param('ssssii', $searchTerm, $searchTerm, $searchTerm, $searchTerm, $items_per_page, $offset);
-} else {
-    $stmt->bind_param('ii', $items_per_page, $offset);
-}
+
+// Add types for LIMIT and OFFSET parameters
+$types .= 'ii';
+$filterValues[] = $items_per_page;
+$filterValues[] = $offset;
+
+$params = array_merge([$types], $filterValues);
+$stmt->bind_param(...$params);
+
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -137,11 +175,28 @@ if (!$result) {
                     
                     <select name="filter_value" id="filter_value" class="filter-date" style="<?php echo $filter_criteria ? '' : 'display:none;'; ?>">
                         <!-- Options will be populated dynamically -->
-                        <?php if ($filter_value) echo "<option value='$filter_value' selected>$filter_value</option>"; ?>
+                        <?php 
+                        if ($filter_criteria === 'kecamatan') {
+                            foreach ($kecamatan_options as $option) {
+                                $selected = ($filter_value == $option) ? 'selected' : '';
+                                echo "<option value='$option' $selected>$option</option>";
+                            }
+                        } elseif ($filter_criteria === 'kelurahan') {
+                            foreach ($kelurahan_options as $option) {
+                                $selected = ($filter_value == $option) ? 'selected' : '';
+                                echo "<option value='$option' $selected>$option</option>";
+                            }
+                        } elseif ($filter_criteria === 'jenis_bangunan') {
+                            foreach ($jenis_bangunan_options as $option) {
+                                $selected = ($filter_value == $option) ? 'selected' : '';
+                                echo "<option value='$option' $selected>$option</option>";
+                            }
+                        }
+                        ?>
                     </select>
-        <button type="submit" class="filter-button">Filter</button>
-    </form>
-</div>
+                    <button type="submit" class="filter-button">Filter</button>
+                </form>
+            </div>
 
             <a href="tambah_data_formulir.php"><button class="add-data-button">+ Tambah Formulir</button></a>
             <a href="tambah_data_sk.php"><button class="add-data-button">+ Tambah SK</button></a>
@@ -214,11 +269,11 @@ if (!$result) {
             var options = [];
 
             if (criteria === 'kecamatan') {
-                options = ['Kecamatan A', 'Kecamatan B', 'Kecamatan C'];
+                options = <?php echo json_encode($kecamatan_options); ?>;
             } else if (criteria === 'kelurahan') {
-                options = ['Kelurahan X', 'Kelurahan Y', 'Kelurahan Z'];
+                options = <?php echo json_encode($kelurahan_options); ?>;
             } else if (criteria === 'jenis_bangunan') {
-                options = ['Bangunan 1', 'Bangunan 2', 'Bangunan 3'];
+                options = <?php echo json_encode($jenis_bangunan_options); ?>;
             }
 
             // Populate the second dropdown
