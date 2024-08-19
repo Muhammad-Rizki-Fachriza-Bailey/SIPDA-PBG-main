@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "root"; 
-$password = ""; 
+$username = "arsipmpp"; 
+$password = "4UOJTiTDbh88HXi"; 
 $dbname = "arsipmpp";
 
 // Membuat koneksi ke database
