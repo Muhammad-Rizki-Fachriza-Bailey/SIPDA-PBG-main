@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root"; 
 $password = ""; 
-$dbname = "data_arsip";
+$dbname = "arsipmpp";
 
 // Membuat koneksi ke database
 $conn = new mysqli($servername, $username, $password, $dbname);
