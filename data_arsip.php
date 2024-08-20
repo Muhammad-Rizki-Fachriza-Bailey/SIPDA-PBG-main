@@ -134,10 +134,10 @@ $is_admin1 = isset($_SESSION['username']) && $_SESSION['username'] === 'Admin1';
         <hr>
         <ul>
             <li>
-                <a href="index_dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon"/>Dashboard</a><hr>
+                <a href="dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon"/>Dashboard</a><hr>
             </li>
             <li>
-                <a href="index_data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
+                <a href="data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
             </li>
             <?php if ($is_admin1): ?>
                 <li>
@@ -145,7 +145,7 @@ $is_admin1 = isset($_SESSION['username']) && $_SESSION['username'] === 'Admin1';
                 </li>
             <?php endif; ?>
         </ul>
-        <a href="login.php"><button>LogOut</button></a>
+        <a href="index.php"><button>LogOut</button></a>
     </div>
     <!-- sidebar end -->
 
@@ -153,7 +153,7 @@ $is_admin1 = isset($_SESSION['username']) && $_SESSION['username'] === 'Admin1';
     <div class="navbar">
         <header>
             <img src="asset/menu.png" alt="menu-icon" class="menu-icon" id="menu-icon"/>
-            <a href="index_dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
+            <a href="dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
         </header>
     </div>
     <!-- navbar end -->
@@ -164,13 +164,13 @@ $is_admin1 = isset($_SESSION['username']) && $_SESSION['username'] === 'Admin1';
         <div class="search-and-filters">
             <div class="search-container">
                 <img src="asset/search-interface-symbol.png" alt="search-icon" class="icon" />
-                <form action="index_data_arsip.php" method="get">
+                <form action="data_arsip.php" method="get">
                     <input type="text" name="search" class="search-bar" placeholder="Cari data" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" />
                     <button type="submit" class="search-button">Cari</button>
                 </form>
             </div>
             <div class="filter-container">
-                <form action="index_data_arsip.php" method="get" class="filter-form">
+                <form action="data_arsip.php" method="get" class="filter-form">
                     <select name="filter_criteria" id="filter_criteria" class="filter-date" onchange="updateFilters()">
                         <option value="">Pilih Kriteria</option>
                         <option value="kecamatan" <?php echo ($filter_criteria == 'kecamatan') ? 'selected' : ''; ?>>Kecamatan</option>
@@ -246,13 +246,13 @@ $is_admin1 = isset($_SESSION['username']) && $_SESSION['username'] === 'Admin1';
             </table>
             <div class="pagination">
                 <?php if ($page > 1): ?>
-                    <a href="index_data_arsip.php?page=<?php echo $page - 1; ?>"><<</a>
+                    <a href="data_arsip.php?page=<?php echo $page - 1; ?>"><<</a>
                 <?php endif; ?>
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <a href="index_data_arsip.php?page=<?php echo $i; ?>" class="<?php if ($page == $i) echo 'active'; ?>"><?php echo $i; ?></a>
+                    <a href="data_arsip.php?page=<?php echo $i; ?>" class="<?php if ($page == $i) echo 'active'; ?>"><?php echo $i; ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $total_pages): ?>
-                    <a href="index_data_arsip.php?page=<?php echo $page + 1; ?>">>></a>
+                    <a href="data_arsip.php?page=<?php echo $page + 1; ?>">>></a>
                 <?php endif; ?>
             </div>
         </div>

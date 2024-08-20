@@ -2,7 +2,7 @@
 require 'connect.php';
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -39,10 +39,10 @@ if ($result->num_rows > 0) {
       <hr>
       <ul>
         <li>
-          <a href="index_dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon"/>Dashboard</a><hr>
+          <a href="dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon"/>Dashboard</a><hr>
         </li>
         <li>
-          <a href="index_data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
+          <a href="data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
         </li>
       </ul>
       <a href="logout.php"><button>Logout</button></a>
@@ -54,7 +54,7 @@ if ($result->num_rows > 0) {
       <header>
         <img src="asset/menu.png" alt="menu-icon" class="menu-icon" id="menu-icon"/>
         <h2 class="welcome">Selamat datang, <?php echo $_SESSION['username']; ?>!</h2>
-        <a href="index_dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
+        <a href="dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
       </header>
     </div>
     <!-- navbar end -->
