@@ -4,7 +4,7 @@ require 'connect.php';
 
 // Cek apakah pengguna sudah login, jika ya arahkan ke halaman dashboard
 if (isset($_SESSION['username'])) {
-    header("Location: index_dashboard.php");
+    header("Location: dashboard.php");
     exit();
 }
 
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verifikasi password
        
             $_SESSION['username'] = $row['username'];
-            header("Location: index_dashboard.php");
+            header("Location: dashboard.php");
             exit();
         
     } else {
