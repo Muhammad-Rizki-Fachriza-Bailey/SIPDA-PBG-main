@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="input-box">
-        <form action="login.php" method="post">
+        <form action="index.php" method="post">
             <img src="asset/Logo DPMPTSP.png" alt="DPMPTSP KOTA TANJUNGPINANG" class="logo"/>
             <h1>Login</h1>
             <?php if (isset($error)): ?>
