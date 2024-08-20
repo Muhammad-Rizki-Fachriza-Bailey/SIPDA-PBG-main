@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES ('$nama', '$ttl', '$jenis_kelamin', '$usia', '$pekerjaan', '$alamat', '$telepon', '$file_pdf_path')";
 
     if ($conn->query($sql) === TRUE) {
-        header("Location: index_data_arsip.php");
+        header("Location: data_arsip.php");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;

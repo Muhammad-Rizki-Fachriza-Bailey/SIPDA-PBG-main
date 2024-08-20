@@ -59,15 +59,15 @@ if (!$data) {
         <hr />
         <ul>
             <li>
-                <a href="index_dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon" />Dashboard</a>
+                <a href="dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon" />Dashboard</a>
                 <hr />
             </li>
             <li>
-                <a href="index_data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon" />Data Arsip</a>
+                <a href="data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon" />Data Arsip</a>
                 <hr />
             </li>
         </ul>
-        <a href="login.php"><button>LogOut</button></a>
+        <a href="index.php"><button>LogOut</button></a>
     </div>
     <!-- sidebar end -->
 
@@ -75,7 +75,7 @@ if (!$data) {
     <div class="navbar">
         <header>
             <img src="asset/menu.png" alt="menu-icon" class="menu-icon" id="menu-icon" />
-            <a href="index_dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
+            <a href="dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
         </header>
     </div>
     <!-- navbar end -->
@@ -83,7 +83,7 @@ if (!$data) {
     <!-- main content start -->
     <div class="main-content">
         <h1 class="title-data-arsip">Detail Data Arsip</h1>
-        <button class="button-back"><a href="index_data_arsip.php" class="back">back</a></button>
+        <button class="button-back"><a href="data_arsip.php" class="back">back</a></button>
 
        <!-- Identity sections -->
 <div class="identity-section">

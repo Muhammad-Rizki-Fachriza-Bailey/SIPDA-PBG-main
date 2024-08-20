@@ -17,7 +17,7 @@ $sql = "UPDATE surat_imb s
 
 if ($conn->query($sql) === TRUE) {
     echo "Record marked as deleted successfully";
-    header("Location: index_data_arsip.php");
+    header("Location: data_arsip.php");
 } else {
     echo "Error updating record: " . $conn->error;
 }

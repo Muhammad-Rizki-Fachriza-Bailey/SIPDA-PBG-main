@@ -20,13 +20,13 @@
         <hr>
         <ul>
             <li>
-                <a href="index_dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon"/>Dashboard</a><hr>
+                <a href="dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon"/>Dashboard</a><hr>
             </li>
             <li>
-                <a href="index_data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
+                <a href="data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
             </li>
         </ul>
-        <a href="login.php"><button>LogOut</button></a>
+        <a href="index.php"><button>LogOut</button></a>
     </div>
     <!-- sidebar end -->
 
@@ -34,7 +34,7 @@
     <div class="navbar">
         <header>
             <img src="asset/menu.png" alt="menu-icon" class="menu-icon" id="menu-icon"/>
-            <a href="index_dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
+            <a href="dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
         </header>
     </div>
     <!-- navbar end -->
@@ -42,7 +42,7 @@
      <!-- main content start -->
      <div class="main-content">
         <h1 class="title-data-arsip">Tambah Data Formulir</h1>
-        <button class="button-back"><a href="index_data_arsip.php" class="back">back</a></button>
+        <button class="button-back"><a href="data_arsip.php" class="back">back</a></button>
   
         <!-- Form start -->
         <form class="edit-form" action="tambah_data_arsip.php" method="post" enctype="multipart/form-data">

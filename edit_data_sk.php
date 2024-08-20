@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                      WHERE id_bangunan='$id'";
 
         if ($conn->query($sql_surat) === TRUE) {
-            header("Location: index_data_arsip.php");
+            header("Location: data_arsip.php");
             exit();
         } else {
             echo "Error: " . $sql_surat . "<br>" . $conn->error;
@@ -129,13 +129,13 @@ $result_pemohon = $conn->query($sql_pemohon);
         <hr>
         <ul>
             <li>
-                <a href="index_dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon"/>Dashboard</a><hr>
+                <a href="dashboard.php" class="dashboard"><img src="asset/dashboard (1).png" alt="dashboard-icon" class="dashboard-icon"/>Dashboard</a><hr>
             </li>
             <li>
-                <a href="index_data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
+                <a href="data_arsip.php" class="arsip"><img src="asset/archive.png" alt="arsip-icon" class="archive-icon"/>Data Arsip</a><hr>
             </li>
         </ul>
-        <a href="login.php"><button>LogOut</button></a>
+        <a href="index.php"><button>LogOut</button></a>
     </div>
     <!-- sidebar end -->
 
@@ -143,7 +143,7 @@ $result_pemohon = $conn->query($sql_pemohon);
     <div class="navbar">
         <header>
             <img src="asset/menu.png" alt="menu-icon" class="menu-icon" id="menu-icon"/>
-            <a href="index_dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
+            <a href="dashboard.php" class="title"><h2>SIPDA - PBG</h2></a>
         </header>
     </div>
     <!-- navbar end -->
@@ -151,7 +151,7 @@ $result_pemohon = $conn->query($sql_pemohon);
     <!-- main content start -->
     <div class="main-content">
         <h1 class="title-data-arsip">Edit Data Arsip SK</h1>
-        <button class="button-back"><a href="index_data_arsip.php" class="back">back</a></button>
+        <button class="button-back"><a href="data_arsip.php" class="back">back</a></button>
         
         <!-- Form start -->
         <form class="edit-form" action="edit_data_sk.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
@@ -219,7 +219,7 @@ $result_pemohon = $conn->query($sql_pemohon);
     <script src="./script/menu_fuction.js"></script>
     <script>
         document.getElementById('btn-cancel').addEventListener('click', function() {
-            window.location.href = 'index_data_arsip.php';
+            window.location.href = 'data_arsip.php';
         });
     </script>
 </body>

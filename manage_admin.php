@@ -18,7 +18,7 @@
 </head>
 <body>
     <div class="container">
-        <button class="button-back"><a href="index_data_arsip.php" class="back">back</a></button>
+        <button class="button-back"><a href="data_arsip.php" class="back">back</a></button>
         <h2>Masukkan Data Admin Baru</h2>
         <div class="form-container">
             <?php
